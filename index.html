@@ -14,7 +14,11 @@
   
       <style>
           body {
-              background-color: indigo;
+                background-image: url(aistsummit2.jpg);
+    background-size: fill;
+background-repeat: no-repeat;
+              padding-top: 75px;
+              background-color: black;
               margin: 0;
               overflow: hidden;
               font-family: Arial, sans-serif;
@@ -92,6 +96,23 @@
               width: 720px;
               height: 128px;
           }
+             .logo5 {
+              
+              width: 540px;
+              height: 306px;
+          }
+               .mainlogo {
+              display: flex;
+              flex-direction: column;
+              justify-content: center;
+              align-items: center;
+              color: white;
+              font-weight: bold;
+              font-size: 20px;
+              border: none;
+              border-radius: 5px;
+              cursor: pointer;
+          }
           .title {
               display: flex;
               flex-direction: column;
@@ -116,11 +137,17 @@
       </style>
   </head>
   <body>
-  
-  <div class="title">
-<a href="#"><img src="https://raw.githubusercontent.com/radicaldeepscale/Autumn/main/Project%20202309251445.png"
-                           alt="Logo4" class="logo4">
+    <div class="mainlogo">
+<a href="#"><img src="https://raw.githubusercontent.com/radicaldeepscale/radicaldeepscale.github.io/main/aist540.png"
+                           alt="Logo5" class="logo5">
 
+  </div>
+  <br>
+  <div class="title">
+
+    <a href="https://www.dartmeadow.com"><img src="https://raw.githubusercontent.com/radicaldeepscale/Autumn/main/Project%20202309251445.png"
+                           alt="Logo4" class="logo4"></a>
+<br>
   </div>
   <div class="menu">
 <button id="exportPNGButton">Export as Transparent PNG</button>
@@ -389,3 +416,4 @@ exportPNGButton.addEventListener('click', exportAsPNG);
   </script>
   </body>
   </html>
+  
