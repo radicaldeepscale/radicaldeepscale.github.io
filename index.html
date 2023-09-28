@@ -1,0 +1,391 @@
+  <!DOCTYPE html>
+  <html>
+  <head>
+      <title>DART Meadow Root Solartal</title>
+      <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/build/three.min.js"></script>
+      <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+      <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/shaders/CopyShader.js"></script>
+      <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/shaders/ConvolutionShader.js"></script>
+      <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/EffectComposer.js"></script>
+      <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/RenderPass.js"></script>
+      <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/ShaderPass.js"></script>
+      <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/BloomPass.js"></script>
+      <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/exporters/GLTFExporter.js"></script>
+  
+      <style>
+          body {
+              background-color: indigo;
+              margin: 0;
+              overflow: hidden;
+              font-family: Arial, sans-serif;
+          }
+  
+          .menu {
+              color: white;
+              font-weight: bold;
+              display: flex;
+              justify-content: center;
+              padding: 10px 0;
+              position: absolute;
+              width: 100%;
+          }
+  
+          .menu button {
+              background-color: deepskyblue;
+              color: white;
+              font-weight: bold;
+              font-size: 20px;
+              border: none;
+              border-radius: 5px;
+              cursor: pointer;
+              margin: 0 10px;
+          }
+  
+          .slider-container {
+              color: white;
+              font-weight: bold;
+              display: flex;
+              flex-direction: column;
+              align-items: center;
+              margin-top: 20px;
+          }
+  
+          .slider-label {
+              color: white;
+              font-weight: bold;
+              margin-bottom: 10px;
+          }
+  
+          .slider {
+              width: 200px;
+          }
+  
+          canvas {
+              display: block;
+              margin: auto;
+              margin-top: 70px;
+          }
+  
+          .action-button {
+              background-color: deepskyblue;
+              color: white;
+              font-weight: bold;
+              font-size: 20px;
+              border: none;
+              border-radius: 5px;
+              cursor: pointer;
+              margin: 0 10px;
+          }
+  
+          h1 {
+              color: white;
+              font-weight: bold;
+          }
+  
+          .logo2 {
+              
+              width: 300px;
+              height: 300px;
+          }
+      .logo4 {
+              
+              width: 720px;
+              height: 128px;
+          }
+          .title {
+              display: flex;
+              flex-direction: column;
+              justify-content: center;
+              align-items: center;
+              color: white;
+              font-weight: bold;
+              font-size: 20px;
+              border: none;
+              border-radius: 5px;
+              cursor: pointer;
+          }
+           @media (max-width: 875px) {
+                .header {
+                    flex-direction: column;
+                    align-items: center;
+                }
+                #exportButton {
+                    margin-top: 10px;
+                }
+            }
+      </style>
+  </head>
+  <body>
+  
+  <div class="title">
+<a href="#"><img src="https://raw.githubusercontent.com/radicaldeepscale/Autumn/main/Project%20202309251445.png"
+                           alt="Logo4" class="logo4">
+
+  </div>
+  <div class="menu">
+<button id="exportPNGButton">Export as Transparent PNG</button>
+
+      <button id="exportButton">Export as GLTF</button>
+  </div>
+  
+  <canvas id="canvas"></canvas>
+  
+  <div class="slider-container">
+      <label class="slider-label">Orbit Speed (in days per minute)</label>
+      <input type="range" min="0.01" max="1000" step="0.01" value="250" class="slider" id="speedSlider">
+      <div id="sliderValue" class="slider-value">250</div>
+      <br>
+      <div class="planet-menu">
+          <label class="slider-label">Select Planet:</label>
+          <select id="planetSelect">
+              <option value="sun">Sun</option>
+              <option value="mercury">Mercury</option>
+              <option value="venus">Venus</option>
+              <option value="earth">Earth</option>
+              <option value="mars">Mars</option>
+              <option value="jupiter">Jupiter</option>
+              <option value="saturn">Saturn</option>
+              <option value="uranus">Uranus</option>
+              <option value="neptune">Neptune</option>
+              <option value="pluto">Pluto</option>
+          </select>
+          <button id="focusButton" class="action-button">Focus</button>
+          <button id="resetButton" class="action-button">Reset</button>
+      </div>
+  </div>
+  
+  <script>
+      const scene = new THREE.Scene();
+      const camera = new THREE.PerspectiveCamera(60, 1, 0.01, 10000);
+      const renderer = new THREE.WebGLRenderer({
+          canvas: document.querySelector('#canvas'),
+          alpha: true
+      });
+      renderer.setSize(875, 875);
+  
+      const controls = new THREE.OrbitControls(camera, renderer.domElement);
+  
+      // Planets data (distance from the Sun and orbit periods in Earth days)
+      const planets = [
+          {name: "Mercury", distance: 57.9, period: 88},
+          {name: "Venus", distance: 108.2, period: 225},
+          {name: "Earth", distance: 149.6, period: 365},
+          {name: "Mars", distance: 227.9, period: 687},
+          {name: "Jupiter", distance: 778.3, period: 4333},
+          {name: "Saturn", distance: 1427, period: 10759},
+          {name: "Uranus", distance: 2871, period: 30687},
+          {name: "Neptune", distance: 4497, period: 60190},
+          {name: "Pluto", distance: 5906, period: 90560}
+      ];
+  
+      // Create Sun
+      const sunGeometry = new THREE.SphereGeometry(10, 32, 32);
+      const sunMaterial = new THREE.MeshPhongMaterial({
+          color: 0xffff00,
+          emissive: 0xffff00,  // Yellow emissive for lighting
+          emissiveIntensity: 1,  // Adjust the intensity as needed
+          shininess: 1,  // No shininess for a sun-like appearance
+      });
+  
+      const sun = new THREE.Mesh(sunGeometry, sunMaterial);
+      scene.add(sun);
+  
+      // Create an array of colors for each planet
+      const planetColors = [
+          new THREE.Color(0xd6cece), // Mercury (Grayish)
+          new THREE.Color(0xffc125), // Venus (Yellowish)
+          new THREE.Color(0x1976D2), // Earth (Blue)
+          new THREE.Color(0xf29100), // Mars (Orange)
+          new THREE.Color(0xffc125), // Jupiter (Yellowish, same as Venus)
+          new THREE.Color(0xe9d8a6), // Saturn (Light Gold)
+          new THREE.Color(0x48b0f7), // Uranus (Light Blue)
+          new THREE.Color(0x464b51), // Neptune (Dark Blueish Gray)
+          new THREE.Color(0x8d6e63)  // Pluto (Brown)
+      ];
+  
+      // Create planets
+      const planetMeshes = [];
+      const orbitGeometries = []; // Array to store orbit ring geometries
+  
+      planets.forEach((planetData, index) => {
+          // Create a transparent ring geometry for the planet's orbit
+          const orbitGeometry = new THREE.RingGeometry(
+              planetData.distance - 0.4, // Inner radius (slightly smaller than planet's distance)
+              planetData.distance + 0.2, // Outer radius (slightly larger than planet's distance)
+              64 // Number of segments
+          );
+  
+          const orbitMaterial = new THREE.MeshBasicMaterial({
+              color: 0xffffff,
+              transparent: true,
+              opacity: 0.2 // Adjust opacity as needed
+          });
+  
+          const orbit = new THREE.Mesh(orbitGeometry, orbitMaterial);
+          scene.add(orbit);
+          orbit.rotation.x = -Math.PI / 2; // Rotate the orbit to align with the solar system plane
+  
+          // Create the planet mesh
+          const planetGeometry = new THREE.SphereGeometry(3, 32, 32);
+          const planetMaterial = new THREE.MeshPhongMaterial({
+              color: planetColors[index], // Assign the unique color
+              emissive: 0x000000,
+              emissiveIntensity: 1,
+              shininess: 1,  // No shininess for a sun-like appearance
+          });
+          const planet = new THREE.Mesh(planetGeometry, planetMaterial);
+          scene.add(planet);
+          planetMeshes.push(planet);
+  
+          // Store the orbit geometry in the array
+          orbitGeometries.push(orbitGeometry);
+      });
+  
+      // Set initial camera position
+      const cameraDistance = 400; // Set the distance from the solar system
+      const cameraHeight = 200;   // Set the height above the solar system plane
+  
+      const cameraX = cameraDistance * Math.cos(Math.PI / 4); // Adjust the angle (Math.PI / 4)
+      const cameraZ = cameraDistance * Math.sin(Math.PI / 4); // Adjust the angle (Math.PI / 4)
+  
+      camera.position.set(cameraX, cameraHeight, cameraZ);
+  
+      // Set the camera's target (lookAt) to the center of the solar system (0, 0, 0)
+      camera.lookAt(0, 0, 0);
+  
+      // Set the camera's up vector to define the orientation (adjust as needed)
+      camera.up.set(0, 1, 0); // Set to (0, 1, 0) for a typical upright orientation
+  
+      // Lighting
+      const ambientLight = new THREE.AmbientLight(0x404040, 5);
+      scene.add(ambientLight);
+  
+      // Bloom Effect
+      const composer = new THREE.EffectComposer(renderer);
+      const renderPass = new THREE.RenderPass(scene, camera);
+      composer.addPass(renderPass);
+  
+      const bloomPass = new THREE.BloomPass(10); // Adjust the intensity as needed
+      // Create a bloom pass for the planets with a milder and more blurry effect
+      const bloomPassPlanets = new THREE.BloomPass(1);
+  
+      //composer.addPass(bloomPass);
+     // composer.addPass(bloomPassPlanets); // Add bloom for the planets
+      const finalPass = new THREE.ShaderPass(THREE.CopyShader);
+      finalPass.renderToScreen = true;
+      composer.addPass(finalPass);
+  
+      // Export as GLTF
+      const exportButton = document.getElementById('exportButton');
+      exportButton.addEventListener('click', exportAsGLTF);
+  
+      function exportAsGLTF() {
+          const exporter = new THREE.GLTFExporter();
+          exporter.parse(scene, function (result) {
+              const gltfBlob = new Blob([JSON.stringify(result)], {type: 'application/octet-stream'});
+              const anchor = document.createElement('a');
+              anchor.href = URL.createObjectURL(gltfBlob);
+              anchor.download = 'solar_system.gltf';
+              anchor.click();
+          });
+      }
+  
+      // Orbit speed control
+      const speedSlider = document.getElementById('speedSlider');
+      const defaultSpeed = 250;
+      let orbitSpeed = defaultSpeed;
+  
+      speedSlider.addEventListener('input', function () {
+          orbitSpeed = parseFloat(this.value);
+      });
+  
+      // Get the slider and value display elements
+      const sliderValue = document.getElementById('sliderValue');
+  
+      // Function to update the value display
+      function updateSliderValue() {
+          sliderValue.textContent = speedSlider.value;
+      }
+  
+      // Trigger the input event and update the initial value display
+      speedSlider.dispatchEvent(new Event('input'));
+      updateSliderValue();
+  
+      // Add an event listener to update the value display when the slider is moved
+      speedSlider.addEventListener('input', updateSliderValue);
+  
+      const focusButton = document.getElementById('focusButton');
+      const planetSelect = document.getElementById('planetSelect');
+  
+      focusButton.addEventListener('click', () => {
+          const selectedPlanet = planetSelect.value;
+          const planetIndex = planets.findIndex(planetData => planetData.name.toLowerCase() === selectedPlanet);
+  
+          if (planetIndex !== -1) {
+              const planetData = planets[planetIndex];
+              const distance = planetData.distance * 1.5; // Adjust the distance as needed
+              const angle = Math.PI / 4; // Adjust the angle as needed (45 degrees)
+  
+              const cameraX = distance * Math.cos(angle);
+              const cameraY = planetData.distance * 0.5; // Adjust the height as needed
+              const cameraZ = distance * Math.sin(angle);
+  
+              camera.position.set(cameraX, cameraY, cameraZ); // Position above and at an angle
+              camera.lookAt(planetMeshes[planetIndex].position); // Point the camera at the selected planet
+          }
+      });
+  
+      const resetButton = document.getElementById('resetButton');
+  
+      resetButton.addEventListener('click', () => {
+          // Reset the camera to the default view
+          const cameraDistance = 400; // Set the distance from the solar system
+          const cameraHeight = 200;   // Set the height above the solar system plane
+          const cameraX = cameraDistance * Math.cos(Math.PI / 4); // Adjust the angle (Math.PI / 4)
+          const cameraZ = cameraDistance * Math.sin(Math.PI / 4); // Adjust the angle (Math.PI / 4)
+          camera.position.set(cameraX, cameraHeight, cameraZ);
+          camera.lookAt(0, 0, 0);
+      });
+  
+      // Animation
+      function animate() {
+          requestAnimationFrame(animate);
+  
+          // Calculate current positions of planets based on their orbits
+          const time = Date.now() * 0.0001 * orbitSpeed;
+          planetMeshes.forEach((planet, index) => {
+              const planetData = planets[index];
+              const angle = -(time / planetData.period) * Math.PI * 2;
+  
+              const x = planetData.distance * Math.cos(angle);
+              const z = planetData.distance * Math.sin(angle);
+              planet.position.set(x, 0, z);
+  
+              // Update the position of the orbit ring geometry
+              orbitGeometries[index].parameters.innerRadius = planetData.distance - 1;
+              orbitGeometries[index].parameters.outerRadius = planetData.distance + 1;
+              orbitGeometries[index].parameters.needsUpdate = true;
+          });
+  
+          // Render the scene using the composer for post-processing
+          composer.render();
+          controls.update();
+      }
+  
+      animate();
+      function exportAsPNG() {
+                    renderer.setClearColor(0x000000, 0);
+                    renderer.render(scene, camera);
+                    const dataURL = renderer.domElement.toDataURL('image/png');
+                    const anchor = document.createElement('a');
+                    anchor.setAttribute('download', 'atom.png')
+                    anchor.setAttribute('href', dataURL);
+                    anchor.click();
+                    renderer.setClearColor(0x000000, 0);
+                }
+  const exportPNGButton = document.getElementById('exportPNGButton');
+exportPNGButton.addEventListener('click', exportAsPNG);
+
+  </script>
+  </body>
+  </html>
