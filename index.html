@@ -253,7 +253,6 @@
             padding: 10px 0;
             position: absolute;
             width: 100%;
-            
         }
 
         /* Style for the "Choose File" button */
@@ -261,7 +260,18 @@
             display: none; /* Hide the default file input */
         }
 
-        .menu .custom-file-upload {
+  .menu .custom-file-upload {
+            background-color: deepskyblue;
+            color: white;
+            font-weight: bold;
+            font-size: 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 0 10px;
+            padding: 8px 12px; /* Adjust padding for better appearance */
+        }
+        .menu .issdld {
             background-color: deepskyblue;
             color: white;
             font-weight: bold;
@@ -387,7 +397,7 @@
  </div>
 <br>
 <div class="menu">
-  
+  <div>
     <button id="exportPNGButton">Export PNG</button>
     <button id="exportGLTFButton">Export GLTF</button>
     <!-- Styling for the "Choose File" button -->
@@ -397,7 +407,12 @@
         Upload GLB
         <!-- Add this input element to your HTML -->
 
-    </label>
+
+</div>
+<div>
+    <label2 class="issdld">
+    <a href="https://drive.google.com/file/d/13IDSKqek4j8tJh6aQwXaoFwULXKqKLcD/view?usp=drivesdk" download="custom-name.ext">Download ISS GLB</a>
+</div>
 </div>
 <br>
 <br>
