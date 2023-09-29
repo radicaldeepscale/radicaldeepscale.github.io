@@ -1,4 +1,6 @@
 
+
+
   <!DOCTYPE html>
   <html>
   <head>
@@ -14,7 +16,8 @@
       <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/ShaderPass.js"></script>
       <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/BloomPass.js"></script>
       <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/exporters/GLTFExporter.js"></script>
-  
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
+
       <style>
           body {
                 background-image: url(marsmway.png);
@@ -388,10 +391,15 @@
     <button id="exportGLTFButton">Export GLTF</button>
     <!-- Styling for the "Choose File" button -->
     <label class="custom-file-upload">
-        <input type="file" id="loadGLTFInput" accept=".gltf">
-        Choose File
+<input type="file" id="loadGLTFInput" accept=".gltf">
+
+        Upload GLTF
+        <!-- Add this input element to your HTML -->
+
     </label>
 </div>
+<br>
+<br>
 
 
 <div id="mncontainer"></div>
@@ -610,7 +618,11 @@
           camera.position.set(cameraX, cameraHeight, cameraZ);
           camera.lookAt(0, 0, 0);
       });
-  
+  // Create a directional light
+const directionalLight = new THREE.DirectionalLight(0xffffff, 2);
+directionalLight.position.set(0, 1, 0); // Adjust the light position as needed
+scene.add(directionalLight);
+
       // Animation
       function animate() {
           requestAnimationFrame(animate);
@@ -650,9 +662,61 @@
   const exportPNGButton = document.getElementById('exportPNGButton');
 exportPNGButton.addEventListener('click', exportAsPNG);
 
-  </script>
 
-  <script>
+  // Add this code to your JavaScript section
+const loader = new THREE.GLTFLoader();
+// After loading the GLTF model, assign it a name or tag
+loader.load('your-model.gltf', (gltf) => {
+    const object = gltf.scene;
+
+    // Assign a name or tag to the object
+    object.name = 'deepSkyBlueObject'; // You can use any name or tag you prefer
+
+    // Ensure the object is lit
+    object.traverse((node) => {
+        if (node.isMesh) {
+            node.material.emissiveIntensity = 1; // Adjust as needed for lighting
+        }
+    });
+
+    // Add the object to the scene
+    scene.add(object);
+});
+
+// Later in your code, you can change the color based on the assigned name or tag
+// For example, change the color of the object with the name 'deepSkyBlueObject' to deep sky blue
+const objectToColor = scene.getObjectByName('deepSkyBlueObject');
+if (objectToColor) {
+    objectToColor.traverse((node) => {
+        if (node.isMesh) {
+            node.material.color.set(0x00BFFF); // Deep sky blue color
+        }
+    });
+}
+
+// Add an event listener for file input change
+const loadGLTFInput = document.getElementById('loadGLTFInput');
+loadGLTFInput.addEventListener('change', handleGLTFUpload);
+
+function handleGLTFUpload(event) {
+    const file = event.target.files[0];
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = function (event) {
+            const data = event.target.result;
+            // Load the GLTF file when it's selected
+            loader.parse(data, '', function (gltf) {
+                // Add your logic to handle the loaded GLTF model here
+                const loadedModel = gltf.scene;
+                scene.add(loadedModel);
+            });
+        };
+        reader.readAsArrayBuffer(file);
+    }
+}
+
+
+  
     // Mock Autumn class for demonstration purposes
     class Autumn {
       onMessage(callback) {
