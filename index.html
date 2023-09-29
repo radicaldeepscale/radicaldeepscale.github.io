@@ -16,7 +16,8 @@
       <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/ShaderPass.js"></script>
       <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/BloomPass.js"></script>
       <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/exporters/GLTFExporter.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
 
       <style>
           body {
@@ -663,10 +664,10 @@ scene.add(directionalLight);
 exportPNGButton.addEventListener('click', exportAsPNG);
 
 
-  // Add this code to your JavaScript section
 const loader = new THREE.GLTFLoader();
-// After loading the GLTF model, assign it a name or tag
-loader.load('your-model.gltf', (gltf) => {
+
+// After loading the GLB model, assign it a name or tag
+loader.load('your-model.glb', (gltf) => {
     const object = gltf.scene;
 
     // Assign a name or tag to the object
