@@ -1,7 +1,10 @@
+
   <!DOCTYPE html>
   <html>
   <head>
       <title>DART Meadow Root Solartal</title>
+         <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
       <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/build/three.min.js"></script>
       <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
       <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/shaders/CopyShader.js"></script>
@@ -20,8 +23,8 @@
               padding-top: 75px;
               background-color: black;
               margin: 0;
-              overflow: hidden;
               font-family: Arial, sans-serif;
+
           }
   
           .menu {
@@ -43,6 +46,7 @@
               border-radius: 5px;
               cursor: pointer;
               margin: 0 10px;
+              
           }
   
           .slider-container {
@@ -79,13 +83,20 @@
               border-radius: 5px;
               cursor: pointer;
               margin: 0 10px;
+              
           }
   
           h1 {
               color: white;
               font-weight: bold;
+              
           }
-  
+   h2 {
+     
+              color: white;
+              font-weight: bold;
+          font-size: 16px;
+          }
           .logo2 {
               
               width: 300px;
@@ -134,6 +145,169 @@
                     margin-top: 10px;
                 }
             }
+                /* Add your CSS styles for the chat container here */
+
+    .chat-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 800px;
+      padding: 10px;
+      margin-top: 20px;
+      border-radius: 5px;
+      box-shadow: 0 0 6px rgba(0, 0, 0, 0.5);
+      cursor: pointer;
+    }
+
+    /* Add your CSS styles for the chat box here */
+
+    .chat-box {
+      width: 100%;
+      height: 500px;
+      overflow-y: scroll;
+      padding: 10px;
+      margin-bottom: 10px;
+      box-shadow: 0 0 6px rgba(0, 0, 0, 0.5);
+      cursor: pointer;
+    }
+
+    /* Add your CSS styles for chat messages here */
+
+    .chat-message {
+      
+      padding: 5px 10px;
+      border-radius: 5px;
+      margin: 5px 0;
+      max-width: 80%;
+      word-wrap: break-word;
+    }
+
+    /* Add your CSS styles for user messages here */
+
+    .user-message {
+      color: white;
+      background-color: #555;
+    }
+
+    /* Add your CSS styles for bot messages here */
+
+    .bot-message {
+      color: white;
+      background-color: #007bff;
+    }
+
+    /* Add your CSS styles for input and button here */
+
+    #chat-input {
+      width: 100%;
+      padding: 5px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+
+    #chat-button {
+      padding: 5px 10px;
+      border: none;
+      border-radius: 5px;
+      background-color: #007bff;
+      color: white;
+      cursor: pointer;
+    }
+    .logo {
+      margin-bottom: 10px;
+      width: 125px;
+      height: 125px;
+      
+    }
+    .arrowmain {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      
+      width: 400px;
+      padding: 10px;
+      margin-top: 20px;
+      justify-content: center;
+    }
+
+.pop {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center; /* Vertically center content */
+    width: 800px;
+    padding: 10px;
+    margin: 20px auto 0; /* Margin-top for spacing from the previous element, auto for horizontal centering */
+    color: white;
+    font-weight: bold;
+}
+        .menu {
+            color: white;
+            font-weight: bold;
+            display: flex;
+            justify-content: center;
+            padding: 10px 0;
+            position: absolute;
+            width: 100%;
+            
+        }
+
+        /* Style for the "Choose File" button */
+        .menu input[type="file"] {
+            display: none; /* Hide the default file input */
+        }
+
+        .menu .custom-file-upload {
+            background-color: deepskyblue;
+            color: white;
+            font-weight: bold;
+            font-size: 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 0 10px;
+            padding: 8px 12px; /* Adjust padding for better appearance */
+        }
+    .mainlogomn {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-weight: bold;
+            font-size: 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+  .logomn {
+              
+              width: 400px;
+              height: 170px;
+          }
+          .lmn {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            
+            font-weight: bold;
+            font-size: 20px;
+         
+        }
+        .dev {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            
+            font-weight: bold;
+            font-size: 20px;
+         
+        }
+  
       </style>
      <link rel="shortcut icon" type="image/x-icon" href="aist.png">
   </head>
@@ -147,8 +321,11 @@
   <br>
   <div class="title">
 
+  
+
     <a href="https://www.dartmeadow.com"><img src="https://raw.githubusercontent.com/radicaldeepscale/radicaldeepscale.github.io/main/dmaistw.png"
                            alt="Logo4" class="logo4"></a>
+                           
 <br>
 <br>
 <div>
@@ -187,8 +364,56 @@
           <button id="focusButton" class="action-button">Focus</button>
           <button id="resetButton" class="action-button">Reset</button>
       </div>
+      
+
   </div>
+  <br>
   
+<div class="lmn">
+           <a href="#">
+        <img src="https://raw.githubusercontent.com/radicaldeepscale/radicaldeepscale.github.io/main/mn540.png"
+             alt="Logomn" class="logomn"> 
+    </a>
+</div>
+<br>
+<div class="dev">
+ <h2>In Development.</h2>
+ </div>
+<br>
+<div class="menu">
+  
+    <button id="exportPNGButton">Export PNG</button>
+    <button id="exportGLTFButton">Export GLTF</button>
+    <!-- Styling for the "Choose File" button -->
+    <label class="custom-file-upload">
+        <input type="file" id="loadGLTFInput" accept=".gltf">
+        Choose File
+    </label>
+</div>
+
+
+<div id="mncontainer"></div>
+<br>
+<br>
+       <div class="pop">
+    <!-- Autumn chat widget -->
+  <div class="chat-container">
+    <div>
+
+  <a href="#">    <h2><img src="https://raw.githubusercontent.com/radicaldeepscale/Autumn/main/Autumn.png" alt="Logo" class="logo">
+  <br>In Development.</h2><br></a>
+  
+  </div>
+    <div class="chat-box" id="chat-output"></div>
+    <input type="text" id="chat-input" placeholder="Type your message here...">
+    <br>
+    <button id="chat-button">Send</button>
+  </div>
+  </div>
+   <br>
+   <br>
+   <br>
+   <br>
   <script>
       const scene = new THREE.Scene();
       const camera = new THREE.PerspectiveCamera(60, 1, 0.01, 10000);
@@ -422,5 +647,69 @@
 exportPNGButton.addEventListener('click', exportAsPNG);
 
   </script>
+
+  <script>
+    // Mock Autumn class for demonstration purposes
+    class Autumn {
+      onMessage(callback) {
+        this.callback = callback;
+      }
+
+      sendMessage(message) {
+        if (this.callback) {
+          setTimeout(() => {
+            this.callback(message);
+          }, 500);
+        }
+      }
+    }
+
+    let autumn = new Autumn();
+
+    document.getElementById("chat-button").addEventListener("click", () => {
+      const inputBox = document.getElementById("chat-input");
+      const message = inputBox.value.trim();
+      if (message === "") return;
+
+      const chatOutput = document.getElementById("chat-output");
+      const userMessage = `<p class="chat-message user-message">Guest: ${message}</p>`;
+      chatOutput.innerHTML += userMessage;
+      chatOutput.scrollTop = chatOutput.scrollHeight; // Scroll to bottom of chat
+
+      inputBox.value = "";
+
+      // Send user message to Autumn for processing
+      autumn.sendMessage(message);
+    });
+
+    document.getElementById("chat-input").addEventListener("keydown", (event) => {
+      if (event.keyCode === 13) {
+        const inputBox = document.getElementById("chat-input");
+        const message = inputBox.value.trim();
+        if (message === "") return;
+
+        const chatOutput = document.getElementById("chat-output");
+        const userMessage = `<p class="chat-message user-message">User: ${message}</p>`;
+        chatOutput.innerHTML += userMessage;
+        chatOutput.scrollTop = chatOutput.scrollHeight; // Scroll to bottom of chat
+
+        inputBox.value = "";
+
+        // Send user message to Autumn for processing
+        autumn.sendMessage(message);
+      }
+    });
+
+    autumn.onMessage((message) => {
+      const chatOutput = document.getElementById("chat-output");
+      const botMessage = `<p class="chat-message bot-message">Autumn: ${message}</p>`;
+      chatOutput.innerHTML += botMessage;
+      chatOutput.scrollTop = chatOutput.scrollHeight; // Scroll to bottom of chat
+    });
+  </script>
+</div>
   </body>
   </html>
+
+
+
