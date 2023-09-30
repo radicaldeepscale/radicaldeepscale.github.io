@@ -5,20 +5,19 @@
   <html>
   <head>
       <title>AIST</title>
-         <meta charset="utf-8">
+ <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
-      <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/build/three.min.js"></script>
-      <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
-      <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/shaders/CopyShader.js"></script>
-      <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/shaders/ConvolutionShader.js"></script>
-      <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/EffectComposer.js"></script>
-      <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/RenderPass.js"></script>
-      <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/ShaderPass.js"></script>
-      <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/BloomPass.js"></script>
-      <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/exporters/GLTFExporter.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
-
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/build/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/shaders/CopyShader.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/shaders/ConvolutionShader.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/EffectComposer.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/RenderPass.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/ShaderPass.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/BloomPass.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/exporters/GLTFExporter.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
+    
       <style>
           body {
                 background-image: url(marsmway.png);
@@ -283,6 +282,17 @@
             margin: 0 10px;
             padding: 8px 12px; /* Adjust padding for better appearance */
         }
+               .menu .arrowdld {
+            background-color: deepskyblue;
+            color: white;
+            font-weight: bold;
+            font-size: 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 0 10px;
+            padding: 8px 12px; /* Adjust padding for better appearance */
+        }
     .mainlogomn {
             display: flex;
             flex-direction: column;
@@ -325,6 +335,15 @@
   .aup {
             
             display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        .model-controls {
+          color: white;
+            
+            font-weight: bold;
+          display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
@@ -411,20 +430,50 @@
     <label class="custom-file-upload">
 <input type="file" id="loadGLTFInput" accept=".gltf">
 
-        Upload GLB
+        Import GLB
         <!-- Add this input element to your HTML -->
 
 
 </div>
 <div>
     <label2 class="issdld">
-    <a href="https://drive.google.com/file/d/13IDSKqek4j8tJh6aQwXaoFwULXKqKLcD/view?usp=drivesdk" download="custom-name.ext">Download ISS GLB</a>
+    <a href="https://drive.google.com/file/d/14ONiO5IW85bL-PVg7XfNzOeGVQbIL9c_/view?usp=drivesdk" download="custom-name.ext">Download ISS GLB</a>
 </div>
+<div>
+    <label3 class="arrowdld">
+    <a href="https://drive.google.com/file/d/14Fh_L6FwuO8yS1G9n-YnBtMYTWp1vabr/view?usp=drivesdk" download="custom-name.ext">Download Arrow GLB</a>
+</div>
+
 </div>
 <br>
 <br>
+<br>
+<br>
+<div class="model-controls">
+    <label for="xInput">X Position:</label>
+    <input type="number" id="xInput" value="0">
 
+    <label for="yInput">Y Position:</label>
+    <input type="number" id="yInput" value="0">
 
+    <label for="zInput">Z Position:</label>
+    <input type="number" id="zInput" value="0">
+
+    <label for="scaleInput">Scale:</label>
+    <input type="number" id="scaleInput" value="1">
+
+    <label for="xRotationInput">X Rotation:</label>
+    <input type="number" id="xRotationInput" value="0">
+
+    <label for="yRotationInput">Y Rotation:</label>
+    <input type="number" id="yRotationInput" value="0">
+
+    <label for="zRotationInput">Z Rotation:</label>
+    <input type="number" id="zRotationInput" value="0">
+</div>
+  
+<br>
+<br>
 <div id="mncontainer"></div>
 <br>
 <br>
@@ -695,29 +744,105 @@ scene.add(directionalLight);
 exportPNGButton.addEventListener('click', exportAsPNG);
 
 
+
+
+// Access the input fields
+const xInput = document.getElementById('xInput');
+const yInput = document.getElementById('yInput');
+const zInput = document.getElementById('zInput');
+const scaleInput = document.getElementById('scaleInput');
+
+const xRotationInput = document.getElementById('xRotationInput');
+const yRotationInput = document.getElementById('yRotationInput');
+const zRotationInput = document.getElementById('zRotationInput');
+
+let objectToRotate; // Define this variable to store the loaded object
+
+
 const loader = new THREE.GLTFLoader();
 
 // After loading the GLB model, assign it a name or tag
-loader.load('your-model.glb', (gltf) => {
+loader.load('edit.glb', (gltf) => {
     const object = gltf.scene;
+objectToRotate = gltf.scene; // Assign the loaded object to the variable
+    objectToRotate.name = 'edit'; // You can use any name or tag you prefer
 
+    // ... (previous code for position and scale)
+
+    scene.add(objectToRotate); // Add the object to the scene
     // Assign a name or tag to the object
-    object.name = 'deepSkyBlueObject'; // You can use any name or tag you prefer
+    object.name = 'edit'; // You can use any name or tag you prefer
 
     // Ensure the object is lit
     object.traverse((node) => {
         if (node.isMesh) {
             node.material.emissiveIntensity = 1; // Adjust as needed for lighting
         }
-    });
+});
+
+    
+
+// Set the initial position of the model based on user input
+const initialX = parseFloat(xInput.value) || 0;
+const initialY = parseFloat(yInput.value) || 0;
+const initialZ = parseFloat(zInput.value) || 0;
+object.position.set(initialX, initialY, initialZ);
+
+// Set the scale of the model based on user input
+const modelScale = parseFloat(scaleInput.value) || 1;
+object.scale.set(modelScale, modelScale, modelScale);
 
     // Add the object to the scene
     scene.add(object);
 });
 
+
+// Update the position and scale of the model when input values change
+xInput.addEventListener('input', updateModelPosition);
+yInput.addEventListener('input', updateModelPosition);
+zInput.addEventListener('input', updateModelPosition);
+scaleInput.addEventListener('input', updateModelScale);
+
+
+function updateModelPosition() {
+    const x = parseFloat(xInput.value) || 0;
+    const y = parseFloat(yInput.value) || 0;
+    const z = parseFloat(zInput.value) || 0;
+    const objectToPosition = scene.getObjectByName('edit');
+    if (objectToPosition) {
+        objectToPosition.position.set(x, y, z);
+    }
+}
+
+
+function updateModelScale() {
+    const scale = parseFloat(scaleInput.value) || 1;
+    const objectToScale = scene.getObjectByName('edit');
+    if (objectToScale) {
+        objectToScale.scale.set(scale, scale, scale);
+    }
+}
+
+// Update the rotation of the loaded model when input values change
+xRotationInput.addEventListener('input', updateModelRotation);
+yRotationInput.addEventListener('input', updateModelRotation);
+zRotationInput.addEventListener('input', updateModelRotation);
+
+function updateModelRotation() {
+    const xRotation = parseFloat(xRotationInput.value) || 0;
+    const yRotation = parseFloat(yRotationInput.value) || 0;
+    const zRotation = parseFloat(zRotationInput.value) || 0;
+
+    if (objectToRotate) {
+        objectToRotate.rotation.set(xRotation, yRotation, zRotation);
+    }
+}
+
+
+
 // Later in your code, you can change the color based on the assigned name or tag
 // For example, change the color of the object with the name 'deepSkyBlueObject' to deep sky blue
-const objectToColor = scene.getObjectByName('deepSkyBlueObject');
+const objectToColor = scene.getObjectByName('edit');
 if (objectToColor) {
     objectToColor.traverse((node) => {
         if (node.isMesh) {
