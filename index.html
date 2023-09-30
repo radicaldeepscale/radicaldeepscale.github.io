@@ -339,7 +339,7 @@
             align-items: center;
             justify-content: center;
         }
-        .model-controls {
+        .controls {
           color: white;
             
             font-weight: bold;
@@ -449,29 +449,32 @@
 <br>
 <br>
 <br>
-<div class="model-controls">
-    <label for="xInput">X Position:</label>
-    <input type="number" id="xInput" value="0">
+<!-- Add these input fields in your HTML -->
 
-    <label for="yInput">Y Position:</label>
-    <input type="number" id="yInput" value="0">
+    <div class="controls">
+              <h3>Scale</h3>
+        <label for="scale">Uniform Scale:</label>
+        <input type="number" id="scale" value="1">
 
-    <label for="zInput">Z Position:</label>
-    <input type="number" id="zInput" value="0">
+      
+        <h3>Translate</h3>
+        <label for="tx">X:</label>
+        <input type="number" id="tx" value="0">
+        <label for="ty">Y:</label>
+        <input type="number" id="ty" value="0">
+        <label for="tz">Z:</label>
+        <input type="number" id="tz" value="0">
 
-    <label for="scaleInput">Scale:</label>
-    <input type="number" id="scaleInput" value="1">
 
-    <label for="xRotationInput">X Rotation:</label>
-    <input type="number" id="xRotationInput" value="0">
+        <h3>Rotate</h3>
+        <label for="rx">X:</label>
+        <input type="number" id="rx" value="0">
+        <label for="ry">Y:</label>
+        <input type="number" id="ry" value="0">
+        <label for="rz">Z:</label>
+        <input type="number" id="rz" value="0">
+    </div>
 
-    <label for="yRotationInput">Y Rotation:</label>
-    <input type="number" id="yRotationInput" value="0">
-
-    <label for="zRotationInput">Z Rotation:</label>
-    <input type="number" id="zRotationInput" value="0">
-</div>
-  
 <br>
 <br>
 <div id="mncontainer"></div>
@@ -746,103 +749,38 @@ exportPNGButton.addEventListener('click', exportAsPNG);
 
 
 
-// Access the input fields
-const xInput = document.getElementById('xInput');
-const yInput = document.getElementById('yInput');
-const zInput = document.getElementById('zInput');
-const scaleInput = document.getElementById('scaleInput');
-
-const xRotationInput = document.getElementById('xRotationInput');
-const yRotationInput = document.getElementById('yRotationInput');
-const zRotationInput = document.getElementById('zRotationInput');
-
-let objectToRotate; // Define this variable to store the loaded object
 
 
 const loader = new THREE.GLTFLoader();
-
+let object;
 // After loading the GLB model, assign it a name or tag
-loader.load('edit.glb', (gltf) => {
+loader.load('your-model.glb', (gltf) => {
     const object = gltf.scene;
-objectToRotate = gltf.scene; // Assign the loaded object to the variable
-    objectToRotate.name = 'edit'; // You can use any name or tag you prefer
 
-    // ... (previous code for position and scale)
-
-    scene.add(objectToRotate); // Add the object to the scene
     // Assign a name or tag to the object
-    object.name = 'edit'; // You can use any name or tag you prefer
+    object.name = 'deepSkyBlueObject'; // You can use any name or tag you prefer
 
     // Ensure the object is lit
     object.traverse((node) => {
         if (node.isMesh) {
             node.material.emissiveIntensity = 1; // Adjust as needed for lighting
+            
+                // Add the object to the scene
+        
         }
-});
-
+    });
+    
+    scene.add(object);
     
 
-// Set the initial position of the model based on user input
-const initialX = parseFloat(xInput.value) || 0;
-const initialY = parseFloat(yInput.value) || 0;
-const initialZ = parseFloat(zInput.value) || 0;
-object.position.set(initialX, initialY, initialZ);
-
-// Set the scale of the model based on user input
-const modelScale = parseFloat(scaleInput.value) || 1;
-object.scale.set(modelScale, modelScale, modelScale);
-
-    // Add the object to the scene
-    scene.add(object);
 });
 
-
-// Update the position and scale of the model when input values change
-xInput.addEventListener('input', updateModelPosition);
-yInput.addEventListener('input', updateModelPosition);
-zInput.addEventListener('input', updateModelPosition);
-scaleInput.addEventListener('input', updateModelScale);
-
-
-function updateModelPosition() {
-    const x = parseFloat(xInput.value) || 0;
-    const y = parseFloat(yInput.value) || 0;
-    const z = parseFloat(zInput.value) || 0;
-    const objectToPosition = scene.getObjectByName('edit');
-    if (objectToPosition) {
-        objectToPosition.position.set(x, y, z);
-    }
-}
-
-
-function updateModelScale() {
-    const scale = parseFloat(scaleInput.value) || 1;
-    const objectToScale = scene.getObjectByName('edit');
-    if (objectToScale) {
-        objectToScale.scale.set(scale, scale, scale);
-    }
-}
-
-// Update the rotation of the loaded model when input values change
-xRotationInput.addEventListener('input', updateModelRotation);
-yRotationInput.addEventListener('input', updateModelRotation);
-zRotationInput.addEventListener('input', updateModelRotation);
-
-function updateModelRotation() {
-    const xRotation = parseFloat(xRotationInput.value) || 0;
-    const yRotation = parseFloat(yRotationInput.value) || 0;
-    const zRotation = parseFloat(zRotationInput.value) || 0;
-
-    if (objectToRotate) {
-        objectToRotate.rotation.set(xRotation, yRotation, zRotation);
-    }
-}
 
 
 
 // Later in your code, you can change the color based on the assigned name or tag
 // For example, change the color of the object with the name 'deepSkyBlueObject' to deep sky blue
-const objectToColor = scene.getObjectByName('edit');
+const objectToColor = scene.getObjectByName('deepSkyBlueObject');
 if (objectToColor) {
     objectToColor.traverse((node) => {
         if (node.isMesh) {
@@ -863,13 +801,68 @@ function handleGLTFUpload(event) {
             const data = event.target.result;
             // Load the GLTF file when it's selected
             loader.parse(data, '', function (gltf) {
+                // Remove previously loaded object, if any
+                if (object) {
+                    scene.remove(object);
+                }
+                
                 // Add your logic to handle the loaded GLTF model here
-                const loadedModel = gltf.scene;
-                scene.add(loadedModel);
+                object = gltf.scene;
+                scene.add(object);
             });
         };
         reader.readAsArrayBuffer(file);
     }
+}
+
+// Add event listeners for translate, scale, and rotate inputs
+const txInput = document.getElementById('tx');
+txInput.addEventListener('input', handleTranslate);
+
+const tyInput = document.getElementById('ty');
+tyInput.addEventListener('input', handleTranslate);
+
+const tzInput = document.getElementById('tz');
+tzInput.addEventListener('input', handleTranslate);
+
+const scaleInput = document.getElementById('scale');
+scaleInput.addEventListener('input', handleScale);
+
+const rxInput = document.getElementById('rx');
+rxInput.addEventListener('input', handleRotate);
+
+const ryInput = document.getElementById('ry');
+ryInput.addEventListener('input', handleRotate);
+
+const rzInput = document.getElementById('rz');
+rzInput.addEventListener('input', handleRotate);
+
+function handleTranslate() {
+    if (!object) return;
+
+    const tx = parseFloat(txInput.value);
+    const ty = parseFloat(tyInput.value);
+    const tz = parseFloat(tzInput.value);
+
+    object.position.set(tx, ty, tz);
+}
+
+function handleScale() {
+    if (!object) return;
+
+    const scale = parseFloat(scaleInput.value);
+
+    object.scale.set(scale, scale, scale);
+}
+
+function handleRotate() {
+    if (!object) return;
+
+    const rx = parseFloat(rxInput.value);
+    const ry = parseFloat(ryInput.value);
+    const rz = parseFloat(rzInput.value);
+
+    object.rotation.set(rx, ry, rz);
 }
 
 
