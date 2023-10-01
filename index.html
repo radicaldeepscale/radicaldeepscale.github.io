@@ -395,6 +395,7 @@
 <button id="exportPNGButton">Export as Transparent PNG</button>
 
       <button id="exportButton">Export as GLTF</button>
+           <button id="exportGLBButton">Export GLB</button>
   </div>
   
   <canvas id="canvas"></canvas>
@@ -653,7 +654,24 @@
       const finalPass = new THREE.ShaderPass(THREE.CopyShader);
       finalPass.renderToScreen = true;
       composer.addPass(finalPass);
+  ///////////////////////////
+  document.querySelector('#exportGLBButton').addEventListener('click', exportGLB);  
   
+  function exportGLB() {
+            const exporter = new THREE.GLTFExporter();
+
+            exporter.parse(scene, function (gltf) {
+                const glbBlob = new Blob([gltf], { type: 'application/octet-stream' });
+                const a = document.createElement('a');
+                a.href = URL.createObjectURL(glbBlob);
+                a.download = 'maze_model.glb';
+                a.click();
+            }, { binary: true });
+        }
+
+
+  
+  //////////////////////////
       // Export as GLTF
       const exportButton = document.getElementById('exportButton');
       exportButton.addEventListener('click', exportAsGLTF);
