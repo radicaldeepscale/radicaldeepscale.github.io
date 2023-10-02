@@ -365,6 +365,60 @@
             align-items: center;
             justify-content: center;
         }
+        /* Style for the menu button */
+/* Style for the menu button */
+/* Style for the menu button */
+/* Style for the menu button */
+/* Style for the menu button */
+mbutton {
+    background-color: rgba(128, 0, 0, 0.2); /* Transparent dark cherry brown */
+    color: darkslategray;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    position: absolute;
+    top: 50px; /* Add 50px padding from the top */
+    left: 50px; /* Add 50px padding from the left */
+    z-index: 2; /* Ensure it's above the menu items */
+}
+
+
+
+
+
+/* Style for the menu container */
+.menu-items {
+    display: none;
+    position: absolute;
+    background-color: rgba(0, 191, 255, 0.2); /* Transparent deep sky blue */
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    
+    min-width: 150px;
+    z-index: 1;
+    top: 100px; /* Add 50px padding from the top */
+    left: 50px; /* Add 50px padding from the left */
+}
+
+
+
+/* Style for individual menu items (links) */
+.menu-items a {
+    display: block;
+    padding: 10px;
+    text-decoration: none;
+    color: black;
+    font-weight: bold;
+    transition: background-color 0.3s;
+}
+
+/* Hover effect for menu items */
+.menu-items a:hover {
+    background-color: rgba(0, 191, 255, 0.2); /* Transparent deep sky blue */
+    color: black;
+    font-weight: bold;
+}
+
       </style>
      <link rel="shortcut icon" type="image/x-icon" href="aist.png">
   </head>
@@ -388,6 +442,11 @@
 <div>
 <a href="mailto:arclake@aist.earth" style="color: white; font-weight: bold; text-decoration: none;">arclake@aist.earth</a>
 </div>
+<div id="menuContainer">
+  
+</div>
+
+
 <br>
 <br>
   </div>
@@ -535,6 +594,59 @@
    <br>
    <br>
   <script>
+  
+  function createDynamicMenu() {
+    const menuContainer = document.getElementById("menuContainer");
+
+    // Create a button to trigger the menu
+    const menuButton = document.createElement("mbutton");
+    menuButton.textContent = "Menu";
+    
+    // Create a div to hold the menu items
+    const menuItems = document.createElement("div");
+    menuItems.classList.add("menu-items");
+    
+    // Add menu items (you can add more dynamically)
+    const menuItem1 = document.createElement("a");
+    menuItem1.textContent = "Lead Edge";
+    menuItem1.href = "https://rawcdn.githack.com/radicaldeepscale/radicaldeepscale.github.io/50d42d4c6a1b53839501e03b04780351ead038d5/LeadEdge.html";
+
+    const menuItem2 = document.createElement("a");
+    menuItem2.textContent = "Articren Wave";
+    menuItem2.href = "https://articrenwave.com";
+
+const menuItem3 = document.createElement("a");
+    menuItem3.textContent = "DART Edge";
+    menuItem3.href = "https://www.dartedge.com/";
+
+    // Append menu items to the menu container
+    menuItems.appendChild(menuItem1);
+    menuItems.appendChild(menuItem2);
+    menuItems.appendChild(menuItem3);
+
+    // Hide the menu initially
+    menuItems.style.display = "none";
+
+    // Add event listener to show/hide menu on button click
+    menuButton.addEventListener("click", function () {
+        if (menuItems.style.display === "none") {
+            menuItems.style.display = "block";
+        } else {
+            menuItems.style.display = "none";
+        }
+    });
+
+    // Append the button and menu items to the menu container
+    menuContainer.appendChild(menuButton);
+    menuContainer.appendChild(menuItems);
+}
+
+// Call the function to create the dynamic menu
+createDynamicMenu();
+
+  
+  
+  
       const scene = new THREE.Scene();
       const camera = new THREE.PerspectiveCamera(60, 1, 1, 10000);
       const renderer = new THREE.WebGLRenderer({
