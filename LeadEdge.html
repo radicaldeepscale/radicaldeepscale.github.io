@@ -35,7 +35,7 @@
             margin: 0;
             height: 100vh;
             display: flex;
-            justify-content: center;
+            //justify-content: center;
             align-items: center;
             flex-direction: column;
             background-color: black;  
@@ -138,6 +138,7 @@
     </style>
 </head>
 <body>
+  <div>
     <div id="title" class="LeadEdgeHeader">
         <h1>Lead Edge Algorithm <br><h3>(Sw)+(Sw^n)+(((b+b)*(a^2))/2)=r</h3></h1>
         <h2>(A Maze Builder In Development) <div>
@@ -165,7 +166,7 @@
     <div id="container">
         <canvas id="canvas" width="875" height="875"></canvas>
     </div>
-
+</div>
     <script>
         const scene = new THREE.Scene();
         const rendererWidth = 875;
