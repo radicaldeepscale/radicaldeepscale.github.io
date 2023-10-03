@@ -310,6 +310,18 @@
             margin: 0 10px;
             padding: 8px 12px; /* Adjust padding for better appearance */
         }
+                       .menu .aldld {
+            background-color: deepskyblue;
+            color: white;
+            font-weight: bold;
+            font-size: 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 0 10px;
+            padding: 8px 12px; /* Adjust padding for better appearance */
+        }
+
     .mainlogomn {
             display: flex;
             flex-direction: column;
@@ -418,7 +430,51 @@ mbutton {
     color: black;
     font-weight: bold;
 }
-
+   #calculator {
+            width: 450px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: rgba(128, 0, 0, 0.2); /* Transparent dark cherry brown */
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            
+        }
+        h2 {
+          color: white;
+          font-weight: bold;
+        }
+        label {
+          color: white;
+          font-weight: bold;
+        }
+        dbutton {
+          color: white;
+          font-weight: bold;
+          background-color: rgba(0, 191, 255, 0.2); /* Transparent deep sky blue */
+          box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+          font-size: 20px;
+          padding: 2px;
+          border: none;
+          border-radius: 5px;
+          cursor: pointer;
+          margin: 0 5px;
+        }
+        p {
+          color: white;
+          font-weight: bold;
+        }
+        .side-by-side {
+        float: left;
+        width: 40%; /* Adjust the width as needed */
+         /* Add some space between the divs */
+        margin-left: 4%;
+        padding-bottom: 50px;
+        
+    }
+    .clear {
+        clear: both;
+    }
       </style>
      <link rel="shortcut icon" type="image/x-icon" href="aist.png">
   </head>
@@ -504,8 +560,7 @@ mbutton {
 
 <div class="menu">
   <div>
-    <button id="exportPNGButton">Export PNG</button>
-    <button id="exportGLTFButton">Export GLTF</button>
+ 
     <!-- Styling for the "Choose File" button -->
     <label class="custom-file-upload">
 <input type="file" id="loadGLTFInput" accept=".gltf">
@@ -529,13 +584,30 @@ mbutton {
     <label4 class="ctdld">
     <a href="https://drive.google.com/file/d/169v7bKEMQcPTd14MRmjp7T7Eqj3b-w6p/view?usp=drivesdk" download="custom-name.ext">Circle Transistor GLB</a>
 </div>
+<div>
+    <label5 class="aldld">
+    <a href="https://drive.google.com/file/d/18VVxyKGBWWA1a9kQkAOZgqYJfAwtMsqC/view?usp=drivesdk" target="_blank">Arc Lake GLB</a>
+</div>
 </div>
 <br>
 <br>
-<br>
-<br>
-<!-- Add these input fields in your HTML -->
 
+
+<br>
+<br>
+<br>
+<br>
+<div class="side-by-side">
+<div id="calculator">
+        <h2>Light-Year to | DART | The speed of light cubed.</h2>
+        <label for="lightYearInput">Enter Light-Years:</label>
+        <input type="number" id="lightYearInput" step="any">
+        <dbutton onclick="calculateSpeedOfLightCubed()">Calculate</dbutton>
+        <p id="result"></p>
+    </div>
+<!-- Add these input fields in your HTML -->
+</div>
+<div class="side-by-side">
     <div class="controls">
               <h3>Scale</h3>
         <label for="scale">Uniform Scale:</label>
@@ -559,14 +631,16 @@ mbutton {
         <label for="rz">Z:</label>
         <input type="number" id="rz" value="0">
     </div>
+</div>
+<br>
+<br>
 
-<br>
-<br>
 <div id="mncontainer"></div>
 <br>
 <br>
 <br>
 <br>
+
        <div class="pop">
     <!-- Autumn chat widget -->
   <div class="chat-container">
@@ -592,7 +666,7 @@ mbutton {
   </div>
    <br>
    <br>
-
+    
    <br>
    <br>
   <script>
@@ -772,7 +846,7 @@ createDynamicMenu();
       const finalPass = new THREE.ShaderPass(THREE.CopyShader);
       finalPass.renderToScreen = true;
       composer.addPass(finalPass);
-  ///////////////////////////
+
   document.querySelector('#exportGLBButton').addEventListener('click', exportGLB);  
   
   function exportGLB() {
@@ -789,7 +863,7 @@ createDynamicMenu();
 
 
   
-  //////////////////////////
+
       // Export as GLTF
       const exportButton = document.getElementById('exportButton');
       exportButton.addEventListener('click', exportAsGLTF);
@@ -906,7 +980,27 @@ scene.add(directionalLight);
 exportPNGButton.addEventListener('click', exportAsPNG);
 
 
+function calculateSpeedOfLightCubed() {
+            const lightYearInput = parseFloat(document.getElementById("lightYearInput").value);
+            const speedOfLightCubed = Math.pow(299792458, 3); // Speed of light cubed in meters per second
 
+            if (!isNaN(lightYearInput)) {
+                const distanceAtSpeedOfLightCubed = lightYearInput * speedOfLightCubed;
+                const lightYearsEquivalent = distanceAtSpeedOfLightCubed / (speedOfLightCubed * 365.25 * 24 * 3600); // Convert to light years
+
+                const years = Math.floor(lightYearsEquivalent);
+                const remainingDays = (lightYearsEquivalent - years) * 365.25;
+                const months = Math.floor(remainingDays / 30.44);
+                const days = Math.floor(remainingDays % 30.44);
+                const hours = Math.floor((remainingDays - days) * 24);
+                const minutes = Math.floor(((remainingDays - days) * 24 - hours) * 60);
+                const seconds = Math.floor((((remainingDays - days) * 24 - hours) * 60 - minutes) * 60);
+
+                document.getElementById("result").textContent = `At the speed of light cubed, you would cover a distance equivalent to approximately ${years} years, ${months} months, ${days} days, ${hours} hours, ${minutes} minutes, and ${seconds} seconds in terms of DART travel.`;
+            } else {
+                document.getElementById("result").textContent = "Please enter a valid number of light-years.";
+            }
+        }
 
 
 
