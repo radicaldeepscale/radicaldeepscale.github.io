@@ -510,11 +510,10 @@ mbutton {
 
   
 
-    <a href="https://www.dartmeadow.com" target="_blank"><img src="https://raw.githubusercontent.com/radicaldeepscale/radicaldeepscale.github.io/main/dmaistw.png"
+    <a href="https://www.dartmeadow.com/" target="_blank"><img src="https://raw.githubusercontent.com/radicaldeepscale/radicaldeepscale.github.io/main/dmaistw.png"
                            alt="Logo4" class="logo4"></a>
 
 
-                           
 <br>
 <br>
 <div>
@@ -695,6 +694,9 @@ mbutton {
    </div>
   <script>
   
+
+                           
+  
   function createDynamicMenu() {
     const menuContainer = document.getElementById("menuContainer");
 
@@ -706,26 +708,47 @@ mbutton {
     const menuItems = document.createElement("div");
     menuItems.classList.add("menu-items");
     
-    // Add menu items (you can add more dynamically)
+       // Add menu items (you can add more dynamically)
     const menuItem1 = document.createElement("a");
-    menuItem1.textContent = "Lead Edge";
-    menuItem1.href = "https://www.dartmeadow.com/lead-edge";
+    menuItem1.textContent = "Autumn";
+    // Trying the first link
+fetch("https://www.dartmeadow.com/autumn")
+  .then(response => {
+    if (response.ok) {
+      // If the first link loads successfully, set the href
+      menuItem1.href = "https://www.dartmeadow.com/autumn";
+    } else {
+      // If the first link fails, redirect to the maintenance link
+      menuItem1.href = "https://cotharticren.wixsite.com/dartmeadow/autumn";
+    }
+  })
+  .catch(error => {
+    // Handle any errors that occur during the fetch
+    console.error('Error:', error);
+    // Redirect to the maintenance link in case of an error
+    menuItem1.href = "https://cotharticren.wixsite.com/dartmeadow/autumn";
+  });
 
+    // Add menu items (you can add more dynamically)
     const menuItem2 = document.createElement("a");
-    menuItem2.textContent = "Articren Wave";
-    menuItem2.href = "https://articrenwave.com";
+    menuItem2.textContent = "Lead Edge";
+    menuItem2.href = "https://www.dartmeadow.com/lead-edge";
 
-const menuItem3 = document.createElement("a");
-    menuItem3.textContent = "DART Edge";
-    menuItem3.href = "https://www.dartedge.com/";
+    const menuItem3 = document.createElement("a");
+    menuItem3.textContent = "Articren Wave";
+    menuItem3.href = "https://articrenwave.com";
 
 const menuItem4 = document.createElement("a");
-    menuItem4.textContent = "PolyReact";
-    menuItem4.href = "https://www.dartmeadow.com/radical-engineering";
+    menuItem4.textContent = "DART Edge";
+    menuItem4.href = "https://www.dartedge.com/";
+
+const menuItem5 = document.createElement("a");
+    menuItem5.textContent = "PolyReact";
+    menuItem5.href = "https://www.dartmeadow.com/radical-engineering";
     
-    const menuItem5 = document.createElement("a");
-    menuItem5.textContent = "FiberEdge";
-    menuItem5.href = "https://www.dartmeadow.com/copy-of-polyreact";
+    const menuItem6 = document.createElement("a");
+    menuItem6.textContent = "FiberEdge";
+    menuItem6.href = "https://www.dartmeadow.com/copy-of-polyreact";
 
     // Append menu items to the menu container
     menuItems.appendChild(menuItem1);
@@ -733,6 +756,7 @@ const menuItem4 = document.createElement("a");
     menuItems.appendChild(menuItem3);
     menuItems.appendChild(menuItem4);
     menuItems.appendChild(menuItem5);
+    menuItems.appendChild(menuItem6);
     // Hide the menu initially
     menuItems.style.display = "none";
 
@@ -1210,5 +1234,6 @@ function handleRotate() {
 
   </body>
   </html>
+
 
 
