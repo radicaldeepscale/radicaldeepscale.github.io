@@ -436,39 +436,38 @@ mbutton {
     color: black;
     font-weight: bold;
 }
-   #calculator {
+    #calculator {
             width: 450px;
             margin: 0 auto;
             padding: 20px;
             background-color: rgba(128, 0, 0, 0.2); /* Transparent dark cherry brown */
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
             border: 1px solid #ccc;
             border-radius: 5px;
-            
         }
         h2 {
-          color: white;
-          font-weight: bold;
+            color: white;
+            font-weight: bold;
         }
         label {
-          color: white;
-          font-weight: bold;
+            color: white;
+            font-weight: bold;
         }
         dbutton {
-          color: white;
-          font-weight: bold;
-          background-color: rgba(0, 191, 255, 0.2); /* Transparent deep sky blue */
-          box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
-          font-size: 20px;
-          padding: 2px;
-          border: none;
-          border-radius: 5px;
-          cursor: pointer;
-          margin: 0 5px;
+            color: white;
+            font-weight: bold;
+            background-color: rgba(0, 191, 255, 0.2); /* Transparent deep sky blue */
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+            font-size: 20px;
+            padding: 2px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 0 5px;
         }
         p {
-          color: white;
-          font-weight: bold;
+            color: white;
+            font-weight: bold;
         }
         .side-by-side {
         float: left;
@@ -624,6 +623,15 @@ mbutton {
         <input type="number" id="lightYearInput" step="any">
         <dbutton onclick="calculateSpeedOfLightCubed()">Calculate</dbutton>
         <p id="result"></p>
+    </div>
+    <br>
+<div id="calculator">
+        <h2>Kelvin to Fahrenheit and Celsius</h2>
+        <label for="kelvinInput">Enter Kelvin temperature:</label>
+        <input type="number" id="kelvinInput" placeholder="Enter Kelvin" required>
+        <dbutton onclick="convertTemperature()">Convert</dbutton>
+        <p id="fahrenheitResult">Fahrenheit: </p>
+        <p id="celsiusResult">Celsius: </p>
     </div>
 
 <!-- Add these input fields in your HTML -->
@@ -1055,7 +1063,20 @@ function calculateSpeedOfLightCubed() {
                 document.getElementById("result").textContent = "Please enter a valid number of light-years.";
             }
         }
+function convertTemperature() {
+            // Get Kelvin input value
+            var kelvinValue = parseFloat(document.getElementById("kelvinInput").value);
 
+            // Convert Kelvin to Fahrenheit
+            var fahrenheitValue = (kelvinValue - 273.15) * 9/5 + 32;
+
+            // Convert Kelvin to Celsius
+            var celsiusValue = kelvinValue - 273.15;
+
+            // Display results
+            document.getElementById("fahrenheitResult").textContent = "Fahrenheit: " + fahrenheitValue.toFixed(2) + " °F";
+            document.getElementById("celsiusResult").textContent = "Celsius: " + celsiusValue.toFixed(2) + " °C";
+        }
 
 
 const loader = new THREE.GLTFLoader();
@@ -1238,4 +1259,4 @@ function handleRotate() {
 
 
 
-    
+      
