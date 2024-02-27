@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Arc Lake</title>
+    <script src="https://unpkg.com/three@0.140.0/build/three.min.js"></script>
+    <script src="https://unpkg.com/three@0.140.0/examples/js/loaders/GLTFLoader.js"></script>
+   <script src="https://unpkg.com/three@0.140.0/examples/js/controls/OrbitControls.js"></script> 
+<!-- 
+<script src="https://unpkg.com/@webxr-polyfill/core@latest">
+  // Initialize WebXRPolyfill
+//  const polyfill = new WebXRPolyfill();
+</script> -->
+    <script src="https://unpkg.com/ar.js@3.3.3/aframe/build/aframe-ar.js"></script>
+<script src="https://unpkg.com/three@0.140.0/examples/js/exporters/GLTFExporter.js"></script>
+    <style>
+        body, html { 
+            margin: 0;
+            overflow: hidden;
+            width: 100%; 
+            height: 100%;
+          //  background-color: indigo; /* Background to match the warm scene */
+        }
+             #arButton {
+               color: white;
+               font-weight: bold;
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            z-index: 1;
+            padding: 10px;
+            background-color: deepskyblue;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        #exportPNGButton, #exportGLBButton {
+    color: white;
+    font-weight: bold;
+    position: absolute;
+    top: 20px;
+    z-index: 1;
+    padding: 10px;
+    background-color: deepskyblue;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+   margin-left: 10px; /* Adjust based on actual layout and spacing */
+}
+        canvas { 
+            display: block;
+            width: 100%;
+            height: 100%;
+        }
+        
+    </style>
+</head>
+<body>
+      <button id="arButton">Enter AR</button>
+  <button id="exportPNGButton" style="left: 140px;">Export to PNG</button>
+<button id="exportGLBButton" style="left: 280px;">Export to GLB</button>
+    <script>
+    
+        
+    
+    
+        let scene, camera, renderer, controls;
+
+        function init() {
+  // Initialize the existing scene, camera, and renderer variables
+  scene = new THREE.Scene();
+  camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 10000);
+  camera.position.set(30, 20, 30);
+
+  renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.shadowMap.enabled = true;
+  renderer.shadowMap.type = THREE.PCFSoftShadowMap; // Enables softer shadows
+
+  renderer.xr.enabled = true; // Enable WebXR
+  document.body.appendChild(renderer.domElement);
+
+                        
+            
+
+    // Assuming other initializations are done above...
+
+    const ambientLight = new THREE.AmbientLight(0xffe0b0, 0.5);
+    scene.add(ambientLight);
+
+// Directional light simulating the sun, first light
+const sunLight = new THREE.DirectionalLight(0xffeba1, 3.5);
+sunLight.position.set(-30, 50, 30); // Positioned to simulate sunlight
+sunLight.castShadow = true;
+scene.add(sunLight);
+
+// Configure shadows for the first light for a more natural look
+sunLight.shadow.mapSize.width = 2048; // Higher resolution shadows
+sunLight.shadow.mapSize.height = 2048;
+sunLight.shadow.camera.near = 0.5; // Keep as tight as possible
+sunLight.shadow.camera.far = 150;
+sunLight.shadow.camera.left = -50;
+sunLight.shadow.camera.right = 50;
+sunLight.shadow.camera.top = 50;
+sunLight.shadow.camera.bottom = -50;
+sunLight.shadow.radius = 10; // Softens the edges of the shadow
+
+// Directional light simulating the sun, second light
+const sunLight2 = new THREE.DirectionalLight(0xffeba1, 2.5);
+sunLight2.position.set(30, 50, -30); // Adjusted to be on the opposite side, angled differently
+sunLight2.castShadow = true;
+scene.add(sunLight2); // Corrected to add sunLight2 to the scene
+
+// Configure shadows for the second light for a more natural look
+sunLight2.shadow.mapSize.width = 2048; // Matching high resolution for consistent shadow quality
+sunLight2.shadow.mapSize.height = 2048;
+sunLight2.shadow.camera.near = 0.5; // Consistent near plane
+sunLight2.shadow.camera.far = 150; // Consistent far plane
+sunLight2.shadow.camera.left = -50;
+sunLight2.shadow.camera.right = 50;
+sunLight2.shadow.camera.top = 50;
+sunLight2.shadow.camera.bottom = -50;
+sunLight2.shadow.radius = 10; // Matching soft edge radius
+
+        
+// Initialization of GLTFLoader
+const loader = new THREE.GLTFLoader();
+
+// Loading the GLB model
+loader.load('https://cdn.jsdelivr.net/gh/DART-Edge-AI/Autumn@main/ArcLake.glb', function(gltf) { // Ensure you replace 'your_model_path.glb' with the actual path to your model
+gltf.scene.traverse(function(node) {
+            if (node.isMesh) {
+                node.castShadow = true;
+                node.receiveShadow = true;
+            }
+        });
+    scene.add(gltf.scene); // Add the loaded model to the scene
+}, undefined, function(error) {
+    console.error('Error loading GLB:', error); // Error handling
+});
+
+
+
+
+
+
+   
+            // OrbitControls for interactive viewing
+            controls = new THREE.OrbitControls(camera, renderer.domElement);
+
+            window.addEventListener('resize', onWindowResize, false);
+            animate();
+        }
+
+        
+/*
+        function onWindowResize() {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        }
+
+        init();
+        */
+        
+/*
+        document.getElementById('arButton').addEventListener('click', async () => {
+            if ('xr' in navigator) {
+                try {
+                    const session = await navigator.xr.requestSession('immersive-ar', {
+                        requiredFeatures: ['local-floor', 'hit-test']
+                    });
+                    renderer.xr.setSession(session);
+                } catch (e) {
+                    console.error('Unable to start AR session:', e);
+                    alert('Failed to start AR session.');
+                }
+            } else {
+                alert('WebXR not supported by this browser');
+            }
+        });
+
+        init();
+*/
+
+
+// Check for AR Support immediately and update UI accordingly
+if ('xr' in navigator) {
+    navigator.xr.isSessionSupported('immersive-ar').then((supported) => {
+        if (supported) {
+            document.getElementById('arButton').style.display = 'block';
+        } else {
+            alert('AR not supported on this device/browser.');
+        }
+    });
+}
+
+let hitTestSource = null;
+let referenceSpace = null;
+
+document.getElementById('arButton').addEventListener('click', async () => {
+if ('xr' in navigator) {
+    try {
+      const session = await navigator.xr.requestSession('immersive-ar', {
+        requiredFeatures: ['local-floor', 'hit-test']
+      });
+      renderer.xr.setSession(session);
+
+      // Define referenceSpace here
+      session.requestReferenceSpace('local-floor').then(space => {
+        referenceSpace = space;
+  
+        // Now referenceSpace is defined, and you can use it
+        // For example, setting up hit test source or using it in animation loop
+      }).catch(err => {
+        console.error('Error requesting reference space:', err);
+      });
+
+    } catch (e) {
+      console.error('Unable to start AR session:', e);
+      alert('Failed to start AR session.');
+    }
+  } else {
+    alert('WebXR not supported by this browser');
+  }
+});
+
+
+
+document.getElementById('exportPNGButton').addEventListener('click', function() {
+  renderer.render(scene, camera);
+  const dataURL = renderer.domElement.toDataURL('image/png');
+
+  // Create an HTML structure to display the image in a new tab
+  const html = `<html><head><title>Exported PNG</title></head><body><br><br><p style="text-align:center; color: indigo; font-weight: bold;">Right-click or long-press on the image to save it.</p><img src="${dataURL}" style="max-width: 100%; display: block; margin: auto; background: #FFF;"/></body></html>`;
+
+  // Open a new tab and write the HTML content
+  const win = window.open();
+  win.document.write(html);
+});
+document.getElementById('exportGLBButton').addEventListener('click', function () {
+    const exporter = new THREE.GLTFExporter();
+    exporter.parse(scene, function (glb) {
+        const blob = new Blob([glb], { type: 'model/gltf-binary' });
+        const url = URL.createObjectURL(blob);
+        // Create a link to download it
+        const a = document.createElement('a');
+        a.style.display = 'none';
+        a.href = url;
+        a.download = 'ArcLake.glb';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+    }, { binary: true });
+});
+function onWindowResize() {
+          if (!renderer.xr.isPresenting) {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+          }
+        }
+function animate() {
+          renderer.setAnimationLoop(function() {
+            renderer.render(scene, camera);
+          });
+        }
+
+init();
+    </script>
+</body>
+</html>
